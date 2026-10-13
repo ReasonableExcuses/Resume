@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { AnalysisResult } from '@/lib/types';
 import { History, Search, Trash2, ExternalLink, MessageSquare, Download } from 'lucide-react';
 
+import { clientGetAnalyses, clientDeleteAnalysis } from '@/lib/clientServices';
+
 export default function AnalysisHistoryPage() {
   const [analyses, setAnalyses] = useState<AnalysisResult[]>([]);
   const [search, setSearch] = useState('');
@@ -13,11 +15,8 @@ export default function AnalysisHistoryPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch('/api/analyses');
-        const json = await res.json();
-        if (json.success && json.data) {
-          setAnalyses(json.data);
-        }
+        const data = await clientGetAnalyses();
+        setAnalyses(data);
       } catch (err) {
         console.error('Error fetching history:', err);
       } finally {
@@ -31,10 +30,8 @@ export default function AnalysisHistoryPage() {
     if (!confirm('Are you sure you want to delete this analysis record?')) return;
 
     try {
-      const res = await fetch(`/api/analyses/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        setAnalyses(analyses.filter((a) => a.id !== id));
-      }
+      await clientDeleteAnalysis(id);
+      setAnalyses(analyses.filter((a) => a.id !== id));
     } catch (err) {
       console.error('Error deleting record:', err);
     }

@@ -16,6 +16,8 @@ import {
   Filter,
 } from 'lucide-react';
 
+import { clientCompareCandidates } from '@/lib/clientServices';
+
 export default function CandidateComparisonPage() {
   const [selectedJobId, setSelectedJobId] = useState(SAMPLE_JOBS[0].id);
   const [selectedResumeIds, setSelectedResumeIds] = useState<string[]>([
@@ -30,18 +32,8 @@ export default function CandidateComparisonPage() {
   const fetchComparison = async (jobId: string, resumeIds: string[]) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/candidates/compare', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jobDescriptionId: jobId,
-          resumeIds,
-        }),
-      });
-      const json = await res.json();
-      if (json.success && json.data) {
-        setComparison(json.data);
-      }
+      const data = await clientCompareCandidates(resumeIds, jobId);
+      setComparison(data);
     } catch (err) {
       console.error('Error fetching comparison:', err);
     } finally {

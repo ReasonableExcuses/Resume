@@ -22,6 +22,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 
+import { clientGetAnalyses, initClientDatabase } from '@/lib/clientServices';
+
 export default function DashboardPage() {
   const { user, role, switchRole, isDemoMode } = useAuth();
   const [analyses, setAnalyses] = useState<AnalysisResult[]>([]);
@@ -30,11 +32,9 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch('/api/analyses');
-        const json = await res.json();
-        if (json.success && json.data) {
-          setAnalyses(json.data);
-        }
+        initClientDatabase();
+        const data = await clientGetAnalyses();
+        setAnalyses(data);
       } catch (err) {
         console.error('Error fetching dashboard analyses:', err);
       } finally {

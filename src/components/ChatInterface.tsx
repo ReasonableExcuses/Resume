@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage, Citation } from '@/lib/types';
+import { clientAnswerQuestion } from '@/lib/clientServices';
 import { Send, Bot, User as UserIcon, Sparkles, BookOpen, AlertTriangle, Trash2, ArrowUpRight } from 'lucide-react';
 
 interface ChatInterfaceProps {
@@ -65,23 +66,20 @@ export function ChatInterface({
     setIsLoading(true);
 
     try {
-      const res = await fetch(`/api/chat/sessions/session-${resumeId}/messages`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: question,
-          resumeId,
-        }),
-      });
+      const { answer, citations, isUnsupportedWarning } = await clientAnswerQuestion(question, resumeId);
 
-      const json = await res.json();
-      if (json.success && json.data?.assistantMessage) {
-        setMessages((prev) => [...prev, json.data.assistantMessage]);
-      } else {
-        throw new Error(json.error || 'Failed to fetch response');
-      }
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `msg-${Date.now()}-a`,
+          sender: 'assistant',
+          text: answer,
+          citations,
+          isUnsupportedWarning,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
     } catch {
-      // Local fallback in case network errors
       setMessages((prev) => [
         ...prev,
         {

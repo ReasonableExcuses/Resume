@@ -1,5 +1,6 @@
 # Smart Resume Analyzer
 
+[![Firebase Hosting](https://img.shields.io/badge/Live%20Demo-Firebase%20Hosting-FFA000?style=flat-square&logo=firebase)](https://nexusresumeanalyzer.web.app)
 [![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
@@ -7,6 +8,8 @@
 [![License](https://img.shields.io/badge/License-MIT-slate?style=flat-square)](LICENSE)
 
 An enterprise-grade resume intelligence platform providing ATS compatibility simulation, contextual job matching, AI writing verification, and document-grounded Retrieval-Augmented Generation (RAG) conversational querying.
+
+**Live Deployment:** [https://nexusresumeanalyzer.web.app](https://nexusresumeanalyzer.web.app)
 
 ---
 

@@ -15,6 +15,7 @@ import {
   UserCheck,
   Loader2,
 } from 'lucide-react';
+import { clientRunAnalysis } from '@/lib/clientServices';
 
 export default function AnalyzeResumePage() {
   const router = useRouter();
@@ -67,31 +68,16 @@ export default function AnalyzeResumePage() {
         }
         return prev;
       });
-    }, 600);
+    }, 450);
 
     try {
-      const res = await fetch('/api/analyses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          resumeId: selectedResume.id,
-          jobTitle,
-          company,
-          jobText,
-        }),
-      });
+      const newAnalysis = await clientRunAnalysis(selectedResume, jobTitle, company, jobText);
 
-      const json = await res.json();
       clearInterval(interval);
-
-      if (!res.ok || !json.success) {
-        throw new Error(json.error || 'Failed to complete resume analysis');
-      }
-
       setAnalysisStep(steps.length);
       setTimeout(() => {
-        router.push(`/app/reports/${json.data.id}`);
-      }, 500);
+        router.push(`/app/reports/${newAnalysis.id}`);
+      }, 400);
     } catch (err: unknown) {
       clearInterval(interval);
       setIsAnalyzing(false);
