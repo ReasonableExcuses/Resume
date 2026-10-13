@@ -1,82 +1,92 @@
-# Smart Resume Analyzer — AI-Powered Resume Intelligence Platform
+# Smart Resume Analyzer
 
-> **"Your Resume. Smarter. Stronger. ATS-Ready."**  
-> A modern, full-stack platform built with Next.js 16, TypeScript, Tailwind CSS, heuristic ATS simulation, Retrieval-Augmented Generation (RAG) chatbot, and recruiter decision-support intelligence.
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.0-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Tests](https://img.shields.io/badge/Tests-11%20Passed-emerald?style=flat-square)](https://github.com/ReasonableExcuses/Resume)
+[![License](https://img.shields.io/badge/License-MIT-slate?style=flat-square)](LICENSE)
 
----
-
-## 🌟 Executive Summary
-
-Unlike basic keyword scanners that only count keyword frequencies, **Smart Resume Analyzer** provides comprehensive, evidence-grounded intelligence for both **Job Seekers** and **Recruiters**:
-
-1. **Smart Resume–Job Matching**: Multi-category weighted alignment (Required Skills 35%, Experience 25%, Responsibilities 15%, Education 10%, Project Evidence 15%) with transparent classifications (Strong, Partial, Missing, Transferable) and actionable recommendations.
-2. **ATS Compatibility Simulator**: Inspects document structure, multi-column layouts, tables, text boxes, and linear extraction order to identify parsing risks before submission.
-3. **AI Writing & Authenticity Insights**: Identifies repetitive clichés, buzzword density, and job-description phrase overlap while providing responsible recruiter verification questions. *(Never treats AI-writing signals as proof of dishonesty).*
-4. **Interactive Resume Chatbot (RAG)**: Conversational assistant strictly grounded in the document with page numbers and section citations, politely acknowledging when facts are not documented.
-5. **Recruiter Candidate Comparison**: Side-by-side multi-candidate comparison against target requisitions with fair hiring notices.
-6. **Dual Persona Demo Mode**: 1-click role switching between Job Seeker (Alex Rivera) and Recruiter (Sarah Jenkins) with preloaded demonstration profiles and job descriptions.
+An enterprise-grade resume intelligence platform providing ATS compatibility simulation, contextual job matching, AI writing verification, and document-grounded Retrieval-Augmented Generation (RAG) conversational querying.
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## System Architecture
 
-```
-Smart Resume Analyzer
-├── Frontend (Next.js 16 App Router + React 19 + TypeScript + Tailwind CSS v4)
-│   ├── Landing Page (/)
-│   ├── Unified App Shell (/app)
-│   ├── Resume Analysis Workflow (/app/analyze)
-│   ├── Comprehensive Multi-Tab Reports (/app/reports/[id])
-│   ├── Dedicated ATS Simulator (/app/ats-simulator)
-│   ├── Dedicated Writing Insights (/app/writing-insights)
-│   ├── Contextual RAG Chatbot (/app/chat)
-│   ├── Candidate Comparison (/app/compare)
-│   ├── Analysis History (/app/history)
-│   └── Settings & AI Keys (/app/settings)
-├── Document Parsing Engine (src/lib/documentParser.ts)
-│   ├── PDF Vector & Text Extraction (pdf-parse)
-│   ├── DOCX Text Extraction (mammoth)
-│   └── Layout Heuristics (multi-column, tables, headers, unicode)
-├── Core Intelligence Engines
-│   ├── Heuristic ATS Simulator (src/lib/atsSimulator.ts)
-│   ├── Weighted Match Engine (src/lib/matchEngine.ts)
-│   ├── Writing Style & Phrase Overlap Analyzer (src/lib/writingAnalyzer.ts)
-│   └── Grounded RAG Chat Engine (src/lib/ragEngine.ts)
-└── REST API Layer (src/app/api/...)
-    ├── /api/resumes (GET, POST upload)
-    ├── /api/analyses (GET, POST analysis pipeline)
-    ├── /api/ats/check (POST standalone inspection)
-    ├── /api/writing-insights/analyze (POST standalone signals)
-    ├── /api/chat/sessions/[id]/messages (POST RAG interaction)
-    └── /api/candidates/compare (POST multi-candidate comparison)
+```mermaid
+flowchart LR
+    subgraph Ingestion
+        A[Resume File<br/>PDF / DOCX / TXT] --> B[Document Parser]
+        C[Job Requisition] --> D[Requirement Extractor]
+    end
+
+    subgraph Intelligence Engines
+        B --> E[ATS Heuristics Simulator]
+        B --> F[Weighted Matching Engine]
+        D --> F
+        B --> G[Writing & Overlap Analyzer]
+        D --> G
+        B --> H[Vector & RAG Indexer]
+    end
+
+    subgraph Deliverables
+        E --> I[ATS Compatibility Report]
+        F --> J[Skill Alignment & Scoring]
+        G --> K[Verification Questions]
+        H --> L[Interactive RAG Chatbot]
+    end
 ```
 
 ---
 
-## 🚀 Quickstart Guide
+## Core Capabilities
 
-### 1. Prerequisites
-- **Node.js**: v18.0.0 or later (v22+ recommended)
-- **npm**: v9+
+| Capability | Technical Approach | Outcome |
+|---|---|---|
+| **Contextual Job Matching** | 5-category weighted scoring (Skills 35%, Experience 25%, Responsibilities 15%, Education 10%, Projects 15%) | Objective 0–100 match index with strong, partial, missing, and transferable classifications |
+| **ATS Compatibility Simulator** | Heuristic inspection of multi-column streams, tables, frames, contact placement, and encoding | Identifies document parsing bottlenecks with a linear text stream preview |
+| **AI Writing Review** | N-gram phrase overlap detection and cliché density profiling | Generates interviewer verification prompts without punitive or ungrounded accusations |
+| **Document RAG Chatbot** | Semantic text chunking with hybrid keyword/vector search and stop-word filtering | Verifiable answers citing exact document sections and page numbers |
+| **Candidate Comparison** | Multi-candidate matrix across uniform job requisitions | Side-by-side screening with built-in fair hiring compliance notices |
 
-### 2. Installation
+---
+
+## Technical Stack
+
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS
+- **Visualization**: Recharts, SVG Gauge Primitives
+- **Document Ingestion**: `pdf-parse`, `mammoth`
+- **Testing**: Node.js Test Runner with `tsx`
+
+---
+
+## Quickstart
+
+### Prerequisites
+- Node.js 18.0.0 or higher
+- npm 9.0.0 or higher
+
+### Installation
 ```bash
+git clone https://github.com/ReasonableExcuses/Resume.git
+cd Resume
 npm install
 ```
 
-### 3. Run Development Server
+### Development
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Navigate to `http://localhost:3000`.
 
-### 4. Run Test Suite
+### Testing
 ```bash
 npm test
 ```
-Executes the test suite covering document parsing, ATS heuristics, score weighting, RAG citations, unreadable file handling, and ethics checks.
+Executes the automated test suite covering parsers, match algorithms, ATS heuristics, and RAG retrieval.
 
-### 5. Production Build
+### Production Build
 ```bash
 npm run build
 npm start
@@ -84,44 +94,33 @@ npm start
 
 ---
 
-## 📡 REST API Reference
+## REST API Reference
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/resumes` | List stored candidate resumes |
-| `POST` | `/api/resumes/upload` | Multipart file upload for PDF/DOCX (up to 10MB) |
-| `POST` | `/api/resumes` | Create resume from pasted text |
-| `GET` | `/api/resumes/:id` | Fetch specific resume with extracted layout metadata |
-| `DELETE` | `/api/resumes/:id` | Purge resume and linked analyses |
-| `POST` | `/api/analyses` | Run full analysis pipeline (Skills, ATS, Writing, Recs) |
-| `GET` | `/api/analyses` | List stored analysis records |
+| `POST` | `/api/resumes/upload` | Ingest and parse PDF/DOCX file (10MB limit) |
+| `GET` | `/api/resumes` | Retrieve stored candidate records |
+| `GET` | `/api/resumes/:id` | Fetch specific resume metadata |
+| `DELETE` | `/api/resumes/:id` | Purge candidate document and linked records |
+| `POST` | `/api/analyses` | Execute end-to-end analysis pipeline |
 | `GET` | `/api/analyses/:id` | Retrieve comprehensive analysis record |
-| `GET` | `/api/analyses/:id/report` | Export structured JSON report data |
-| `POST` | `/api/ats/check` | Standalone ATS compatibility inspection |
-| `POST` | `/api/writing-insights/analyze` | Standalone AI writing and phrase overlap check |
-| `POST` | `/api/chat/sessions` | Create or fetch RAG chat session |
-| `POST` | `/api/chat/sessions/:id/messages` | Send question and receive evidence-grounded answer with citations |
-| `POST` | `/api/candidates/compare` | Compare 2+ resumes against a job description |
+| `GET` | `/api/analyses/:id/report` | Export structured JSON analysis report |
+| `POST` | `/api/ats/check` | Standalone ATS layout compatibility audit |
+| `POST` | `/api/writing-insights/analyze` | Standalone stylistic and phrase overlap audit |
+| `POST` | `/api/chat/sessions/:id/messages` | Query document RAG engine with evidence citations |
+| `POST` | `/api/candidates/compare` | Evaluate multiple resumes against a target job requisition |
 
 ---
 
-## 🔒 Security, Privacy & Fairness Safeguards
+## Security and Ethics Principles
 
-1. **Client-side & Server-side Document Validation**: Enforces a 10MB file limit, sanitizes file names, and inspects MIME structures.
-2. **Untrusted Text Ingestion**: Resume content is treated strictly as data, never as executable code or prompt instructions.
-3. **No Punitive AI Accusations**: Clear disclaimers stating that AI writing metrics measure phrase overlap and generic wording to assist human interviewers, not to accuse candidates of dishonesty.
-4. **Data Retention & Session Purging**: Users can purge all cached records and reset to clean defaults at any time via Settings.
-5. **No Discriminatory Ranking**: The comparison engine compares only documented, job-related criteria, excluding protected demographic attributes.
-
----
-
-## 🧪 Demonstration Personas Included
-
-- **Alex Rivera**: Senior Full-Stack Engineer (6+ years exp, React, Next.js, TypeScript, Node.js, AWS ECS, Redis).
-- **Priya Sharma**: Senior Data Analyst (5+ years exp, SQL, Python, Tableau, Snowflake, A/B Testing).
-- **Marcus Chen**: Lead Technical Project Manager (7+ years exp, PMP, CSM, Agile/Scrum, JIRA, Cloud migrations).
+1. **Untrusted Input Sanitation**: All uploaded documents are treated strictly as structured text input, neutralizing execution and prompt injection vectors.
+2. **Responsible AI Review**: Stylistic reviews highlight areas requiring human validation rather than inferring automated dishonesty.
+3. **Session Data Isolation**: Records are bound to authenticated or local demo sessions with user-directed purge capabilities.
+4. **Fair Hiring Guardrails**: Prohibits filtering by demographic, photographic, or protected attributes.
 
 ---
 
-## 📜 License
-Developed for academic demonstration and portfolio presentation. MIT License.
+## License
+
+Released under the MIT License.
